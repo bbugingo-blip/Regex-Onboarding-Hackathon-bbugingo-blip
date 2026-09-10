@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-10T18:54:43.036383+00:00",
+  "generated_at": "2026-09-10T19:35:53.228402+00:00",
   "source_file": "input/raw-text.txt",
   "security": {
     "lines_scanned": 50,
@@ -8,36 +8,31 @@
       {
         "line": 36,
         "reasons": [
-          "raw_unfiltered_upstream_log_line",
-          "xss_script_or_event_handler"
+          "raw_unfiltered_upstream_log_line"
         ]
       },
       {
         "line": 37,
         "reasons": [
-          "raw_unfiltered_upstream_log_line",
-          "sql_injection"
+          "raw_unfiltered_upstream_log_line"
         ]
       },
       {
         "line": 38,
         "reasons": [
-          "raw_unfiltered_upstream_log_line",
-          "path_traversal"
+          "raw_unfiltered_upstream_log_line"
         ]
       },
       {
         "line": 39,
         "reasons": [
-          "raw_unfiltered_upstream_log_line",
-          "header_or_crlf_injection"
+          "raw_unfiltered_upstream_log_line"
         ]
       },
       {
         "line": 40,
         "reasons": [
-          "raw_unfiltered_upstream_log_line",
-          "template_injection"
+          "raw_unfiltered_upstream_log_line"
         ]
       },
       {
