@@ -61,13 +61,7 @@ To try it on your own text, just replace the contents of
 
 The file is split into clearly labelled sections:
 
-1. **Security checks** — a list of `(name, regex, explanation)` tuples that
-   flag a line as unsafe if it looks like:
-   - an XSS payload (`<script>`, `<iframe>`, `onerror=...`)
-   - a SQL-injection attempt (`DROP TABLE`, `' OR '1'='1`, `';--`)
-   - a path-traversal attempt (`../../etc/passwd`)
-   - HTTP header/CRLF injection
-   - a template/expression injection (`{{7*7}}`, `${jndi:...}`)
+1. **Security check (`line_is_safe`)** — flags a line as unsafe if it is:
    - a raw, unfiltered upstream log line (see **Security design** below)
    - an abnormally long line (possible DoS attempt)
 
@@ -98,11 +92,16 @@ The file is split into clearly labelled sections:
   `SYSTEM AUDIT LOG (raw, unfiltered feed from upstream API - DO NOT TRUST
   BLINDLY)`. Lines starting with a timestamp like `[2026-09-08T14:01:02Z]`
   are treated as internal telemetry, not user-submitted data, and are
-  excluded from extraction by policy. This matters because one of those
-  log lines contains a plain, unmasked, Luhn-valid credit card number
-  (`4111111111111111`) — if we ran the credit-card regex on every line
-  without this rule, that real-looking card number would leak straight
-  into our "safe" output. Excluding the whole line prevents that.
+  excluded from extraction by policy — regardless of what they contain.
+  This single rule is enough to reject every hostile example in the
+  sample input (an XSS payload, a SQL-injection string, a path-traversal
+  attempt, a header/CRLF injection, a template-injection payload, and a
+  raw credit-card dump), because each one happens to be wrapped inside a
+  timestamped log entry in this dataset. This also matters because one of
+  those log lines contains a plain, unmasked, Luhn-valid credit card
+  number (`4111111111111111`) — if we ran the credit-card regex on every
+  line without this rule, that real-looking card number would leak
+  straight into our "safe" output. Excluding the whole line prevents that.
 
 - **ALU email validation is anchored, not a substring check.**
   A naive check like `"alueducation.com" in email` would incorrectly
@@ -149,4 +148,3 @@ them rather than silently trusting the API response.
 All credit card numbers used are publicly documented **test/dummy card
 numbers** (the kind used in payment-gateway sandboxes) — no real financial
 data is used anywhere in this project.
-
