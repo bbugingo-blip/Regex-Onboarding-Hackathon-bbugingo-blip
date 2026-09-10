@@ -1,0 +1,163 @@
+{
+  "generated_at": "2026-09-10T18:54:43.036383+00:00",
+  "source_file": "input/raw-text.txt",
+  "security": {
+    "lines_scanned": 50,
+    "lines_excluded": 6,
+    "incidents": [
+      {
+        "line": 36,
+        "reasons": [
+          "raw_unfiltered_upstream_log_line",
+          "xss_script_or_event_handler"
+        ]
+      },
+      {
+        "line": 37,
+        "reasons": [
+          "raw_unfiltered_upstream_log_line",
+          "sql_injection"
+        ]
+      },
+      {
+        "line": 38,
+        "reasons": [
+          "raw_unfiltered_upstream_log_line",
+          "path_traversal"
+        ]
+      },
+      {
+        "line": 39,
+        "reasons": [
+          "raw_unfiltered_upstream_log_line",
+          "header_or_crlf_injection"
+        ]
+      },
+      {
+        "line": 40,
+        "reasons": [
+          "raw_unfiltered_upstream_log_line",
+          "template_injection"
+        ]
+      },
+      {
+        "line": 41,
+        "reasons": [
+          "raw_unfiltered_upstream_log_line"
+        ]
+      }
+    ]
+  },
+  "results": {
+    "emails": [
+      {
+        "masked": "b*****4@gmail.com",
+        "category": "external"
+      },
+      {
+        "masked": "b*************o@alueducation.com",
+        "category": "alu_official"
+      },
+      {
+        "masked": "k******i@si.alueducation.com",
+        "category": "alu_si"
+      },
+      {
+        "masked": "g*****e@alumni.alueducation.com",
+        "category": "alu_alumni"
+      },
+      {
+        "masked": "f**********t@alueducation.com.phish-site.net",
+        "category": "external"
+      },
+      {
+        "masked": "a***n@alueducation.co",
+        "category": "external"
+      },
+      {
+        "masked": "t**t@subdomain.alumni.alueducation.com.evil.org",
+        "category": "external"
+      },
+      {
+        "masked": "n*****y@si.alueducation.com.attacker.io",
+        "category": "external"
+      },
+      {
+        "masked": "J***********g@Example.CO.UK",
+        "category": "external"
+      },
+      {
+        "masked": "j**********0@yahoo.com",
+        "category": "external"
+      }
+    ],
+    "alu_emails": {
+      "alu_official": [
+        "b*************o@alueducation.com"
+      ],
+      "alu_alumni": [
+        "g*****e@alumni.alueducation.com"
+      ],
+      "alu_si": [
+        "k******i@si.alueducation.com"
+      ]
+    },
+    "credit_cards": [
+      {
+        "masked": "**** **** **** 6467",
+        "brand": "Visa",
+        "luhn_valid": true
+      },
+      {
+        "masked": "**** **** **** 0004",
+        "brand": "MasterCard",
+        "luhn_valid": false
+      },
+      {
+        "masked": "*** **** **** 8431",
+        "brand": "American Express",
+        "luhn_valid": true
+      }
+    ],
+    "urls": [
+      "https://portal.alueducation.com/payments?course=SWE202&ref=8823",
+      "https://xe.com/currencyconverter",
+      "http://support.example.com/kb/article?id=558&lang=en",
+      "https://www.alueducation.com/admissions/faq/"
+    ],
+    "phone_numbers": [
+      "+250 782 949 929",
+      "(078) 234-5566",
+      "078-100-2233",
+      "250-788-112233",
+      "+1 (415) 555-0199 ext. 42",
+      "0788112233"
+    ],
+    "times": [
+      "14:02",
+      "9:00 AM",
+      "5:30 PM",
+      "14:30",
+      "09:15",
+      "6:45 PM"
+    ],
+    "hashtags": [
+      "#PaymentFailed",
+      "#ALUStudentLife",
+      "#TuitionHelp",
+      "#techsupport2026"
+    ],
+    "html_tags": [],
+    "currency_amounts": [
+      "$389.50",
+      "$25.00",
+      "$414.50",
+      "€12,00",
+      "-$9.99",
+      "RWF 450,000",
+      "389.50 USD",
+      "KES 2,500",
+      "2500 RWF"
+    ]
+  }
+}
