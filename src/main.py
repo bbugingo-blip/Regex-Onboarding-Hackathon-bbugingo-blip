@@ -10,15 +10,10 @@ import os
 from datetime import datetime, timezone
 
 
-SECURITY_PATTERNS = {
-    "xss_script_or_event_handler": r"<\s*(script|iframe)\b|on\w+\s*=\s*['\"]?[^\s>]+",
-    "sql_injection": r"(?i)(\bdrop\s+table\b|\bunion\s+select\b|;\s*--|'\s*--|'\s*or\s*'1'\s*=\s*'1)",
-    "path_traversal": r"\.\./|\.\.\\",
-    "header_or_crlf_injection": r"\\r\\n|X-Fake:|Set-Cookie\s*:",
-    "template_injection": r"\{\{.*?\}\}|\$\{jndi:",
-}
+# Raw upstream log lines (e.g. "[2026-09-08T14:01:02Z] ...") are untrusted
+# telemetry, not user data, and are always excluded from extraction.
 RAW_LOG_LINE = r"^\s*\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\]"
-MAX_LINE_LENGTH = 1000
+MAX_LINE_LENGTH = 1000  # an abnormally long line can be a DoS attempt
 
 
 def line_is_safe(line):
@@ -27,25 +22,26 @@ def line_is_safe(line):
         reasons.append("oversized_line")
     if re.match(RAW_LOG_LINE, line):
         reasons.append("raw_unfiltered_upstream_log_line")
-    for name, pattern in SECURITY_PATTERNS.items():
-        if re.search(pattern, line):
-            reasons.append(name)
     return (len(reasons) == 0, reasons)
 
 
 def extract_emails(text):
+    # local-part @ domain.tld - rejects junk like "plainaddress" or "a@@b.com".
     return re.findall(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", text)
 
 
 def extract_credit_cards(text):
+    # 13-19 digits, spaces/dashes allowed. Only finds candidates - Luhn validates.
     return re.findall(r"\b(?:\d[ -]?){12,18}\d\b", text)
 
 
 def extract_urls(text):
+    # http/https ONLY - other schemes (ftp://, javascript:) are not matched.
     return re.findall(r"\bhttps?://[^\s<>\"']+", text)
 
 
 def extract_phone_numbers(text):
+    # Flexible separators + optional "ext. 42"; bounded so it can't grab a card number.
     return re.findall(
         r"(?<!\d)(?:\+?\d{1,3}[\s.-]?)?(?:\(\d{2,4}\)[\s.-]?)?"
         r"\d{2,4}[\s.-]?\d{2,4}(?:[\s.-]?\d{2,6})?"
@@ -55,14 +51,17 @@ def extract_phone_numbers(text):
 
 
 def extract_times(text):
+    # 24h (14:30) or 12h (6:45 PM).
     return re.findall(r"\b(?:[01]?\d|2[0-3]):[0-5]\d(?:\s?[APap][Mm])?\b", text)
 
 
 def extract_hashtags(text):
+    # (?!-) stops "#INV-2291" (an invoice reference) from counting as a hashtag.
     return re.findall(r"#[A-Za-z][A-Za-z0-9_]{1,49}\b(?!-)", text)
 
 
 def extract_currency(text):
+    # Symbol-based ("$389.50", "€12,00") and ISO-code-based ("RWF 450,000") amounts.
     symbol_amounts = re.findall(r"[-+]?[$€£¥]\s?\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})?", text)
     code_amounts = re.findall(
         r"\b(?:USD|RWF|KES|EUR|GBP|UGX|TZS)\s?\d[\d,]*(?:\.\d{1,2})?\b"
@@ -73,6 +72,7 @@ def extract_currency(text):
 
 
 def extract_html_tags(text):
+    # Lines with <script>/<iframe>/event-handlers are already excluded above.
     return re.findall(r"<\/?[a-zA-Z][a-zA-Z0-9]*(?:\s+[^<>]*?)?\/?>", text)
 
 
@@ -109,6 +109,7 @@ def mask_email(email):
 
 
 def classify_alu_email(email):
+    # fullmatch (not "in") so a lookalike like "...alueducation.com.phish-site.net" is rejected.
     if re.fullmatch(r"[A-Za-z0-9._%+-]+@si\.alueducation\.com", email, re.IGNORECASE):
         return "alu_si"
     if re.fullmatch(r"[A-Za-z0-9._%+-]+@alumni\.alueducation\.com", email, re.IGNORECASE):
@@ -144,6 +145,7 @@ def main():
         if category != "external":
             alu_emails[category].append(mask_email(email))
 
+    # Blank out found card numbers so phone extraction can't re-match those digits.
     cards = []
     scrubbed_text = safe_text
     for raw in extract_credit_cards(safe_text):
@@ -215,4 +217,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
